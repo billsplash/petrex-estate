@@ -16,7 +16,7 @@ export default function BlogPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-primary mb-2">Blog &amp; Insights</h1>
+        <h1 className="text-3xl font-bold text-primary mb-2">Blog & Insights</h1>
         <p className="text-gray-600">Expert advice and market updates for Nigerian property seekers</p>
       </div>
 

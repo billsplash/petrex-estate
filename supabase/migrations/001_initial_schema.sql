@@ -106,3 +106,5 @@ CREATE POLICY "Property images viewable" ON property_images FOR SELECT USING (tr
 CREATE POLICY "Anyone can create inquiry" ON inquiries FOR INSERT WITH CHECK (true);
 CREATE POLICY "Users manage own favorites" ON favorites FOR ALL USING (auth.uid() = user_id);
 CREATE POLICY "Published posts viewable" ON posts FOR SELECT USING (published = true);
+CREATE POLICY "Users view own payments" ON payments FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY "Users insert own payments" ON payments FOR INSERT WITH CHECK (auth.uid() = user_id);

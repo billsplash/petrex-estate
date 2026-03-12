@@ -48,8 +48,15 @@ export function useProperties(filters?: SearchFilters) {
       setLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(filters)]);
+  }, [
+    filters?.location,
+    filters?.type,
+    filters?.status,
+    filters?.minPrice,
+    filters?.maxPrice,
+    filters?.bedrooms,
+    filters?.keyword,
+  ]);
 
   return { properties, loading, error };
 }
