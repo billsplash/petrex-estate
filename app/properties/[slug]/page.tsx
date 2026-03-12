@@ -11,7 +11,7 @@ import Badge from '@/components/ui/Badge';
 import { format } from 'date-fns';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -19,7 +19,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const property = mockProperties.find((p) => p.slug === params.slug);
+  const { slug } = await params;
+  const property = mockProperties.find((p) => p.slug === slug);
   if (!property) return { title: 'Property Not Found' };
   return {
     title: property.title,
@@ -27,8 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function PropertyDetailPage({ params }: Props) {
-  const property = mockProperties.find((p) => p.slug === params.slug);
+export default async function PropertyDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const property = mockProperties.find((p) => p.slug === slug);
   if (!property) notFound();
 
   const statusVariant =

@@ -7,7 +7,7 @@ import { mockPosts } from '@/lib/mock-data';
 import { format } from 'date-fns';
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -15,16 +15,18 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = mockPosts.find((p) => p.slug === params.slug);
+  const { slug } = await params;
+  const post = mockPosts.find((p) => p.slug === slug);
   if (!post) return { title: 'Post Not Found' };
   return { title: post.title, description: post.excerpt };
 }
 
-export default function BlogDetailPage({ params }: Props) {
-  const post = mockPosts.find((p) => p.slug === params.slug);
+export default async function BlogDetailPage({ params }: Props) {
+  const { slug } = await params;
+  const post = mockPosts.find((p) => p.slug === slug);
   if (!post) notFound();
 
-  const related = mockPosts.filter((p) => p.slug !== params.slug && p.published).slice(0, 3);
+  const related = mockPosts.filter((p) => p.slug !== slug && p.published).slice(0, 3);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

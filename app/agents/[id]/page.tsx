@@ -8,7 +8,7 @@ import PropertyCard from '@/components/properties/PropertyCard';
 import { format } from 'date-fns';
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export async function generateStaticParams() {
@@ -16,13 +16,15 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const agent = mockAgents.find((a) => a.id === params.id);
+  const { id } = await params;
+  const agent = mockAgents.find((a) => a.id === id);
   if (!agent) return { title: 'Agent Not Found' };
   return { title: agent.full_name, description: agent.bio };
 }
 
-export default function AgentProfilePage({ params }: Props) {
-  const agent = mockAgents.find((a) => a.id === params.id);
+export default async function AgentProfilePage({ params }: Props) {
+  const { id } = await params;
+  const agent = mockAgents.find((a) => a.id === id);
   if (!agent) notFound();
 
   const listings = mockProperties.filter((p) => p.agent_id === agent.id);
